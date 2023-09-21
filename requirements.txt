@@ -1,0 +1,3 @@
+llama-index==0.8.27
+langchain
+openai
