@@ -11,12 +11,14 @@ from llama_index.schema import IndexNode
 from llama_index.retrievers import RecursiveRetriever
 from llama_index.query_engine import RetrieverQueryEngine
 from llama_index.response_synthesizers import get_response_synthesizer
+from llama_index.agent import OpenAIAgent
+from llama_index.llms import OpenAI
 
 # Llama-Lang
 from llama_index.langchain_helpers.agents.tools import IndexToolConfig, LlamaIndexTool
 
 from langchain.agents import AgentExecutor, LLMSingleActionAgent, AgentOutputParser, load_tools, initialize_agent, AgentType
-from langchain import LLMChain, OpenAI
+# from langchain import LLMChain, OpenAI
 
 
 logging.basicConfig(stream=sys.stdout, level=logging.INFO)
@@ -41,23 +43,23 @@ for n,x in enumerate(temp):
     vector_query_engine = vector_index.as_query_engine()
     list_query_engine = summary_index.as_query_engine()
     
-    # query_engine_tools = [
-    #     QueryEngineTool(
-    #         query_engine = vector_query_engine,
-    #         metadata = ToolMetadata(name = "vector_tool", description= "Useful for summarization questions related to {x}")
-    #     ),
-    #     QueryEngineTool(
-    #         query_engine = list_query_engine,
-    #         metadata =  ToolMetadata(name = "summary_tool", description = "Useful for retrieving specific context from {x}")
-    #     )
-    # ]
-
-    tool_config = IndexToolConfig(
-            query_engine=vector_query_engine, 
-            name=f"Vector Index",
-            description="useful for when you want to answer queries about {x}",
-            tool_kwargs={"return_direct": True},
+    query_engine_tools = [
+        QueryEngineTool(
+            query_engine = vector_query_engine,
+            metadata = ToolMetadata(name = "vector_tool", description= "Useful for summarization questions related to {x}")
         ),
+        QueryEngineTool(
+            query_engine = list_query_engine,
+            metadata =  ToolMetadata(name = "summary_tool", description = "Useful for retrieving specific context from {x}")
+        )
+    ]
+
+    # tool_config = IndexToolConfig(
+    #         query_engine=vector_query_engine, 
+    #         name=f"Vector Index",
+    #         description="useful for when you want to answer queries about {x}",
+    #         tool_kwargs={"return_direct": True},
+    #     ),
         # IndexToolConfig(
         #     query_engine = list_query_engine,
         #     name = f"Summary Index",
@@ -68,16 +70,21 @@ for n,x in enumerate(temp):
 
     # tool_names = [tool.name for tool in tools_config]
 
-    # llm = OpenAI(model="gpt-3.5-turbo-0613")
-    tools = LlamaIndexTool.from_tool_config(tool_config)
+    function_llm = OpenAI(model="gpt-3.5-turbo-0613")
+    # tools = LlamaIndexTool.from_tool_config(tool_config)
     
     # tools = load_tools(query_engine_tools, llm=llm)
-    agent = initialize_agent(
-        tools,
-        llm,
-        agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION,
+    # agent = initialize_agent(
+    #     tools,
+    #     llm,
+    #     agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION,
+    #     verbose=True,
+    #     return_intermediate_steps=True,
+    # )
+    agent = OpenAIAgent.from_tools(
+        query_engine_tools,
+        llm=function_llm,
         verbose=True,
-        return_intermediate_steps=True,
     )
     agents[x] = agent
 
@@ -111,4 +118,5 @@ query_engine = RetrieverQueryEngine.from_args(
     service_context=service_context,
 )
 
-print(query_engine.query("Write an agreement to sale of a commercial property of size 20x40 at a price of Rs.50,00,000.00 and has no pending lawsuit."))
+# print(query_engine.query("Write an agreement to sale of a commercial property of size 20x40 at a price of Rs.50,00,000.00 and has no pending lawsuit."))
+print(query_engine.query("Draft a lease agreement for a residential property for minimum 8 months with the advance rent of 2 months and the decided rent is Rs.10,000 per month."))
