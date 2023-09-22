@@ -1,4 +1,5 @@
 import streamlit as st
+import test
 
 st.set_page_config(layout = "wide")
 
@@ -19,7 +20,9 @@ if prompt := st.chat_input("Send a message"):
     st.chat_message("user").markdown(prompt)
     st.session_state.messages.append({"role": "user", "content": prompt})
 
-    response = f"Reply: {prompt}"
+    reply = test.query_engine.query(prompt)
+
+    response = reply
     with st.chat_message("assistant"):
-        st.markdown(response)
+        st.write(response)
     st.session_state.messages.append({"role": "assistant", "content": response})

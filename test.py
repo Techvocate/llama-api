@@ -1,7 +1,9 @@
 import os
 import logging
 import sys
+import tiktoken
 
+from llama_index.callbacks import CallbackManager, TokenCountingHandler
 from llama_index import StorageContext, load_index_from_storage, SummaryIndex, ServiceContext
 from llama_index.indices.vector_store.retrievers.retriever import VectorIndexRetriever
 from llama_index.vector_stores.types import VectorStoreQueryMode
@@ -23,6 +25,12 @@ from langchain.agents import AgentExecutor, LLMSingleActionAgent, AgentOutputPar
 
 logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 logging.getLogger().addHandler(logging.StreamHandler(stream=sys.stdout))
+
+token_counter = TokenCountingHandler(
+    tokenizer=tiktoken.encoding_for_model("gpt-3.5-turbo").encode
+)
+
+callback_manager = CallbackManager([token_counter])
 
 llm = OpenAI(temperature=0, model="gpt-3.5-turbo")
 service_context = ServiceContext.from_defaults(llm=llm)
@@ -46,11 +54,11 @@ for n,x in enumerate(temp):
     query_engine_tools = [
         QueryEngineTool(
             query_engine = vector_query_engine,
-            metadata = ToolMetadata(name = "vector_tool", description= "Useful for summarization questions related to {x}")
+            metadata = ToolMetadata(name = temp[n],description= descriptions[n])
         ),
         QueryEngineTool(
             query_engine = list_query_engine,
-            metadata =  ToolMetadata(name = "summary_tool", description = "Useful for retrieving specific context from {x}")
+            metadata =  ToolMetadata(name = temp[n], description= descriptions[n])
         )
     ]
 
@@ -89,17 +97,19 @@ for n,x in enumerate(temp):
     agents[x] = agent
 
 nodes = []
-for acts in temp:
+for n,x in enumerate(names):
     act_summary = (
-        f"This content contains Acts about {acts}. "
-        f"Use this index if you need to lookup specific facts about {acts}.\n"
+        f"This content contains Acts about {x}. "
+        f"Use this index if you need to lookup specific facts about {x}.\n"
         "Do not use this index if you want to analyze multiple acts."
     )
-    node = IndexNode(text=act_summary, index_id=acts)
+    node = IndexNode(text=act_summary, index_id=temp[n])
     nodes.append(node)
 
+print(nodes)
+
 vector_index = VectorStoreIndex(nodes)
-vector_retriever = vector_index.as_retriever(similarity_top_k=2)
+vector_retriever = vector_index.as_retriever(similarity_top_k=1)
 
 recursive_retriever = RecursiveRetriever(
     "vector",
@@ -117,6 +127,9 @@ query_engine = RetrieverQueryEngine.from_args(
     response_synthesizer=response_synthesizer,
     service_context=service_context,
 )
+token_counter.reset_counts()
+print(query_engine.query("Draft an agreement for sale of goods between two parties i.e M/s Elite Electronics and Bright Bulb Pvt. Ltd. Bright Bulb Pvt. Ltd. will supply material to M/s Elite Electronics as per their demand, but M/s Elite Electronics must have to buy minimum 500 units per month, not less than that and cost for each unit will be dependent on the material. The term period for this agreement will be of 15 months."))
+print(token_counter.total_llm_token_count)
 
 # print(query_engine.query("Write an agreement to sale of a commercial property of size 20x40 at a price of Rs.50,00,000.00 and has no pending lawsuit."))
-print(query_engine.query("Draft a lease agreement for a residential property for minimum 8 months with the advance rent of 2 months and the decided rent is Rs.10,000 per month."))
+# print(query_engine.query("Draft a lease agreement for a residential property for minimum 8 months with the advance rent of 2 months and the decided rent is Rs.10,000 per month."))
