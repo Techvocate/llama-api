@@ -105,9 +105,7 @@ for n,x in enumerate(names):
     )
     node = IndexNode(text=act_summary, index_id=temp[n])
     nodes.append(node)
-
-print(nodes)
-
+    
 vector_index = VectorStoreIndex(nodes)
 vector_retriever = vector_index.as_retriever(similarity_top_k=1)
 
