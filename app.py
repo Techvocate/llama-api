@@ -2,6 +2,7 @@ import streamlit as st
 import main
 import asyncio
 import redirect as rd
+import os
 
 def get_or_create_eventloop():
     try:
@@ -21,10 +22,12 @@ def run(query):
         st.write(ox.response)
         return True
     
+os.environ["openai_secret_key"] == st.secrets["openai_secret_key"],
+
 st.set_page_config(layout = "wide")
 
 with st.sidebar:
-    st.title("LegalEase: \nLegal Document Assistant")
+    st.title("LegalEase: \nLegal Documentation Assistant")
     st.write("""
     Generative AI powered legal document creator or drafter. automatically generate a wide range of legal documents, including contracts, agreements, wills, deeds, and more. Users can input specific details, such as names, dates, and terms, and the AI system produces a customized document based on predefined templates and legal language.
     """)
