@@ -170,7 +170,7 @@ class CustomOutputParser(AgentOutputParser):
 
 
 agent_chain = preprocessing()
-agent_chain.run("Draft an agreement for sale of goods between two parties i.e M/s Elite Electronics and Bright Bulb Pvt. Ltd. Bright Bulb Pvt. Ltd. will supply material to M/s Elite Electronics as per their demand, but M/s Elite Electronics must have to buy minimum 500 units per month, not less than that and cost for each unit will be dependent on the material. The term period for this agreement will be of 15 months.")
+# agent_chain.run("Draft an agreement for sale of goods between two parties i.e M/s Elite Electronics and Bright Bulb Pvt. Ltd. Bright Bulb Pvt. Ltd. will supply material to M/s Elite Electronics as per their demand, but M/s Elite Electronics must have to buy minimum 500 units per month, not less than that and cost for each unit will be dependent on the material. The term period for this agreement will be of 15 months.")
 # print(query_engine.query("Draft an agreement for sale of goods between two parties i.e M/s Elite Electronics and Bright Bulb Pvt. Ltd. Bright Bulb Pvt. Ltd. will supply material to M/s Elite Electronics as per their demand, but M/s Elite Electronics must have to buy minimum 500 units per month, not less than that and cost for each unit will be dependent on the material. The term period for this agreement will be of 15 months."))
 # print(query_engine.query("Write an agreement to sale of a commercial property of size 20x40 at a price of Rs.50,00,000.00 and has no pending lawsuit."))
 # print(query_engine.query("Draft a lease agreement for a residential property for minimum 8 months with the advance rent of 2 months and the decided rent is Rs.10,000 per month."))
