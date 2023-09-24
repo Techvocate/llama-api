@@ -22,7 +22,7 @@ def run(query):
         st.write(ox.response)
         return True
     
-os.environ["openai_secret_key"] == st.secrets["openai_secret_key"],
+# os.environ["openai_secret_key"] = st.secrets["openai_secret_key"]
 
 st.set_page_config(layout = "wide")
 

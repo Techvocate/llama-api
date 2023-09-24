@@ -4,6 +4,7 @@ import sys
 import tiktoken
 import re
 import templates as tm
+import streamlit as st
 
 from llama_index.callbacks import CallbackManager, TokenCountingHandler
 from llama_index import StorageContext, load_index_from_storage, SummaryIndex, ServiceContext
@@ -29,6 +30,8 @@ from langchain import OpenAI as op2
 
 logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 logging.getLogger().addHandler(logging.StreamHandler(stream=sys.stdout))
+
+os.environ["openai_secret_key"] == st.secrets["openai_secret_key"]
 
 llm = op1(temperature=0, model='gpt-3.5-turbo')
 service_context = ServiceContext.from_defaults(llm=llm)
