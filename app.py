@@ -24,6 +24,8 @@ def run(query):
 
 st.set_page_config(layout = "wide")
 
+key = st.secrets['OPENAI_API_KEY']
+
 with st.sidebar:
     st.title("LegalEase: \nLegal Documentation Assistant")
     st.write("""
