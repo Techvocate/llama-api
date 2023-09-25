@@ -4,6 +4,7 @@ import sys
 import tiktoken
 import re
 import templates as tm
+from config import OPENAI_API_KEY
 import app
 
 from llama_index.callbacks import CallbackManager, TokenCountingHandler
