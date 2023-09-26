@@ -18,7 +18,7 @@ def get_or_create_eventloop():
 def run(query):
     if query:
         with rd.stdout() as out:
-            ox = main.agent_chain.run(query) 
+            ox = main.preprocessing().run(query) 
         output = out.getvalue()
         output = main.remove_formatting(output)
         st.write(ox.response)
