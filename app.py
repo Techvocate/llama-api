@@ -4,7 +4,7 @@ import asyncio
 import redirect as rd
 import os
 
-st.set_page_config(layout = "wide")
+st.set_page_config(page_title="LegalEase",layout = "wide")
 
 def get_or_create_eventloop():
     try:
@@ -24,7 +24,7 @@ def run(query):
         st.write(ox.response)
         return True
     
-key = st.secrets.seckey.OPENAI_API_KEY
+key = st.secrets["OPENAI_API_KEY"]
 
 with st.sidebar:
     st.title("LegalEase: \nLegal Documentation Assistant")
