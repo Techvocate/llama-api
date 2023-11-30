@@ -4,7 +4,7 @@ import sys
 import tiktoken
 import re
 import templates as tm
-import app
+
 
 from llama_index.callbacks import CallbackManager, TokenCountingHandler
 from llama_index import StorageContext, load_index_from_storage, SummaryIndex, ServiceContext
@@ -32,7 +32,8 @@ logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 logging.getLogger().addHandler(logging.StreamHandler(stream=sys.stdout))
 
 # os.environ['OPENAI_API_KEY'] = app.key
-
+os.environ['OPENAI_API_KEY']
+print(os.environ['OPENAI_API_KEY'])
 llm = op1(temperature=0, model='gpt-3.5-turbo')
 service_context = ServiceContext.from_defaults(llm=llm)
 
@@ -168,8 +169,10 @@ class CustomOutputParser(AgentOutputParser):
         action_input = match.group(2)
         return AgentAction(tool=action, tool_input=action_input.strip(" ").strip('"'), log=llm_output)
 
-
-# agent_chain = preprocessing()
+def to_run(query):
+    agent_chain = preprocessing()
+    responce = agent_chain.run(query)
+    return responce
 # agent_chain.run("Draft an agreement for sale of goods between two parties i.e M/s Elite Electronics and Bright Bulb Pvt. Ltd. Bright Bulb Pvt. Ltd. will supply material to M/s Elite Electronics as per their demand, but M/s Elite Electronics must have to buy minimum 500 units per month, not less than that and cost for each unit will be dependent on the material. The term period for this agreement will be of 15 months.")
 # print(query_engine.query("Draft an agreement for sale of goods between two parties i.e M/s Elite Electronics and Bright Bulb Pvt. Ltd. Bright Bulb Pvt. Ltd. will supply material to M/s Elite Electronics as per their demand, but M/s Elite Electronics must have to buy minimum 500 units per month, not less than that and cost for each unit will be dependent on the material. The term period for this agreement will be of 15 months."))
 # print(query_engine.query("Write an agreement to sale of a commercial property of size 20x40 at a price of Rs.50,00,000.00 and has no pending lawsuit."))
