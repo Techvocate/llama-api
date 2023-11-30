@@ -25,15 +25,12 @@ from langchain.schema import AgentAction, AgentFinish
 from langchain.prompts import StringPromptTemplate
 from langchain.agents import AgentExecutor, LLMSingleActionAgent, AgentOutputParser, Tool
 from langchain.chat_models import ChatOpenAI
-from langchain import LLMChain
-from langchain import OpenAI as op2
+from langchain.chains import LLMChain
+from langchain.llms import OpenAI as op2
 
 logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 logging.getLogger().addHandler(logging.StreamHandler(stream=sys.stdout))
 
-# os.environ['OPENAI_API_KEY'] = app.key
-os.environ['OPENAI_API_KEY']
-print(os.environ['OPENAI_API_KEY'])
 llm = op1(temperature=0, model='gpt-3.5-turbo')
 service_context = ServiceContext.from_defaults(llm=llm)
 
