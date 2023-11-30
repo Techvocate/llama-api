@@ -23,7 +23,7 @@ Observation: the result of the action
 ... (this Thought/Action/Action Input/Observation can repeat N times)
 Thought: I now know the final answer
 Final Answer: the final answer to the original input question
-if not enough information , ask the agent all the needed information in questions with numbers.
+You must always draft a document.
 Take a deep breath and work on this problem step by step. make a plan , 
 identify the relevant variables and execute.
 Begin generating document! Remember to be ethical, legal and articulate when giving your final answer. Use lots of arguments.

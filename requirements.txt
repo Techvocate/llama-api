@@ -1,4 +1,5 @@
 llama-index==0.8.27
-langchain
-openai
+langchain==0.0.327
+openai==0.28
 streamlit
+tiktoken

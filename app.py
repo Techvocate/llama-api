@@ -23,16 +23,15 @@ def get_or_create_eventloop():
             return asyncio.get_event_loop()
 
 def run(query):
-    st.write(f"Done: {query}")
-    return True
-    # if query:
-    #     with rd.stdout() as out:
-    #         # ox = main.preprocessing().run(query)
-    #         ox = agent_chain.run(query) 
-    #     output = out.getvalue()
-    #     output = main.remove_formatting(output)
-    #     st.write(ox.response)
-    #     return True
+    if query:
+        with rd.stdout() as out:
+            # ox = main.preprocessing().run(query)
+            ox = main.to_run(query) 
+        output = out.getvalue()
+        output = main.remove_formatting(output)
+        with st.spinner("Generating..."):
+            st.write(ox.response)
+        return True
 
 
 
@@ -55,7 +54,7 @@ def display_page_1():
             )
             st.write("Generated Query:")
             st.write(query)
-            send_query(query)
+            run(query)
 
 
 # Function for Page 2
@@ -77,7 +76,7 @@ def display_page_2():
             )
             st.write("Generated Query:")
             st.write(query)
-            send_query(query)
+            run(query)
 
 # Function for Page 3
 def display_page_3():
@@ -98,7 +97,7 @@ def display_page_3():
             )
             st.write("Generated Sale Deed:")
             st.write(query)
-            send_query(query)
+            run(query)
 
 # Function for Page 4
 def display_page_4():
@@ -118,13 +117,10 @@ def display_page_4():
         query = f"Draft a {document_type} (document type) titled {document_title} of Date {document_date}. The details about the document are '{document_details}'"
         st.write("Generated Document:")
         st.write(query)
-        send_query(query)
+        run(query)
 
 
-def send_query(query):
-    response = run(query)
-    with st.spinner("Generating..."):
-        st.write(response)
+
         
 
 st.title("Legalease\nLegal Documentation Assistant")
