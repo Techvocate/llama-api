@@ -4,7 +4,7 @@ import asyncio
 import redirect as rd
 import os
 
-st.set_page_config(page_title="LegalEase",layout = "wide")
+st.set_page_config(page_title="Techvocate")
 
 hide_github_icon = """
 GithubIcon {
@@ -34,8 +34,14 @@ def run(query):
         return True
 
 
+st.title("Legalease\nLegal Documentation Assistant")
+
+option = st.selectbox("Select Type of Legal Document", ["None","Rent Agreement( Only Uttar Pradesh )", "Business Agreement", "Sale Deed", "Other"])
 
 # Function to display page based on selected option
+def display_page_0():
+    st.header("Generative AI powered solution for generating legal documents related to daily life of a common person. Only related to some legal aspects, just for prototype purpose")
+
 def display_page_1():
     st.subheader("Form for Agreement Details")
     with st.form("Agreement Form"):
@@ -119,18 +125,9 @@ def display_page_4():
         st.write(query)
         run(query)
 
-
-
-        
-
-st.title("Legalease\nLegal Documentation Assistant")
-details = ("Generative AI powered legal document creator or drafter. automatically generate a wide range of legal documents, including contracts, agreements, wills, deeds, and more. Users can input specific details, such as names, dates, and terms, and the AI system produces a customized document based on predefined templates and legal language.")
-option = st.selectbox("Select an option", ["None","Rent Agreement( Only Uttar Pradesh )", "Business Agreement", "Sale Deed", "Other"])
-
 # Conditionally display pages based on selected option
 if option=="None":
-    st.header("\n\n\n")
-    st.header(details)
+    display_page_0()
 elif option == "Rent Agreement( Only Uttar Pradesh )":
     display_page_1()
 elif option == "Business Agreement":
